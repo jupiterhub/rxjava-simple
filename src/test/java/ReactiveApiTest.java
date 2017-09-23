@@ -1,9 +1,12 @@
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class ObservableTest {
+public class ReactiveApiTest {
     @Test
     public void testHelloWorld() {
         Observable.just("Hello World").subscribe(System.out::println);
@@ -33,5 +36,14 @@ public class ObservableTest {
             .concatMap(x -> Observable.just(x * 10))    // executes at the same time
             .delay(500, TimeUnit.MILLISECONDS)
             .blockingSubscribe(System.out::println);
+    }
+
+    @Test
+    public void creatingSourcesFromDifferentTypes() {
+        // Check README.md for difference between these
+        Flowable.just("Hello", "World");
+        Observable.just("Hello", "World");
+        Maybe.just("Hello");
+        Single.just("Hello");
     }
 }

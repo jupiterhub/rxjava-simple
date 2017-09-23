@@ -9,8 +9,12 @@ There are other implementation of Reactive framework like AKKA, reactor, and the
 This project however uses JDK8 as JDK9 is not compatible with gradle at this point of writing
 
 
+## Notable classes
+* Flowable (has backpressure, meaning it can create another request)
+* Observable (no backpressure, only dispose)
+* Publisher, Subscriber, Subscription, Processor (has the publisher and subscriber)
 
-
-## Topics covered
-* Hello World
-* TBD
+#### Specialized classes (No backpressure)
+* Completable - complete or error )
+* Single - item or error
+* Maybe - item, complete, or error
