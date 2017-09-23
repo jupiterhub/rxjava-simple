@@ -1,9 +1,9 @@
-import io.reactivex.Flowable;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import io.reactivex.*;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 public class ReactiveApiTest {
@@ -39,11 +39,51 @@ public class ReactiveApiTest {
     }
 
     @Test
-    public void creatingSourcesFromDifferentTypes() {
+    public void testCreateSourcesFromJust() {
         // Check README.md for difference between these
         Flowable.just("Hello", "World");
         Observable.just("Hello", "World");
         Maybe.just("Hello");
         Single.just("Hello");
+
+        // Arrays is also possible
+        List<String> strings = Arrays.asList("Hello", "World");
+
+        Flowable.fromArray(strings);
+        Flowable.fromIterable(strings);
+
+        Observable.fromArray(strings);
+        Observable.fromIterable(strings);
+    }
+
+    @Test
+    public void testCreateSourcesFromCallables() {
+
+        Observable.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception { // throw exception, callable can handle exceptions
+                return "a sync behavior that returns a single value";
+                // return apiCall(httpRequest).execute();   <-- ie. this throws exception
+                // onError is called if it is, otherwise onComplete is
+            }
+        });
+
+        Flowable.fromCallable(() -> "Hello");
+        Observable.fromCallable(() -> "Hello");
+        Maybe.fromCallable(() -> "Hello");
+        Single.fromCallable(() -> "Hello");
+        Completable.fromCallable(() -> "Ignored");  // no result for completable
+
+        // additional methods on Maybe and Completable (Because they don't provide results)
+        Maybe.fromAction(() -> System.out.println("Hello"));
+        Maybe.fromRunnable(() -> System.out.println("Hello"));
+
+        Completable.fromAction(() -> System.out.println("Hello"));
+        Completable.fromRunnable(() -> System.out.println("Hello"));
+    }
+
+    @Test
+    public void testCreateSourcesFromCreate() {
+
     }
 }
