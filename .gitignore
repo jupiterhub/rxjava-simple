@@ -1,0 +1,9 @@
+# Editor directories and files
+build/
+.idea
+.gradle
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
